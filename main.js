@@ -1,11 +1,18 @@
 let numCelle = 100;
 let grid = document.getElementById("grid");
 const numeriUnici = generaNumeriCasuali();
+let giocoInCorso = false; // Aggiunto uno stato per indicare se il gioco è in corso
 
+// Evento click per btnPlay
 document.getElementById("btnPlay").addEventListener("click", function () {
-    for (let i = 1; i <= numCelle; i++) {
-        let cella = creaQuadrato(i);
-        grid.appendChild(cella);
+    if (!giocoInCorso) {
+        for (let i = 1; i <= numCelle; i++) {
+            let cella = creaQuadrato(i);
+            grid.appendChild(cella);
+        }
+        giocoInCorso = true;
+
+       
     }
 });
 
@@ -16,25 +23,29 @@ function creaQuadrato(numero) {
 
     const numeroCella = document.createElement("p");
     cella.appendChild(numeroCella);
-    cella.classList.add("center")
+    cella.classList.add("center");
 
     numeroCella.textContent = numero;
 
-    // Evento al click
+    //variabile che mi servirà per fare la sumatoria dei punti
+    const numeroCelleValide = numCelleTotali - bombeList
+
+    // Evento al click 
     cella.addEventListener("click", function () {
-        cella.classList.add("bAzurro");
-        const cellaClicata = numero; 
-        console.log("Cella cliccata: " + cellaClicata);
+        if (giocoInCorso) {
+            cella.classList.add("bAzurro");
+            const cellaClicata = numero;
+            console.log("Cella cliccata: " + cellaClicata);
 
-        // Controla se i numeri clicati sono gli stessi dei numeri cauali
-        if (numeriUnici.includes(cellaClicata)){
-            cella.style.backgroundColor = "red";
-            cella.innerHTML= "Hai perso"
-            console.log("Hai perso");
-        } else {
-            console.log("Continua giocando");
-            cella.innerHTML= "Continua"
-
+            // Controla se i numeri clicati sono gli stessi dei numeri casuali
+            if (numeriUnici.includes(cellaClicata)) {
+                cella.style.backgroundColor = "red";
+                cella.innerHTML = "Hai perso";
+                console.log("Hai perso");
+            } else {
+                console.log("Continua giocando");
+                cella.innerHTML = "Continua";
+            }
         }
     });
 
@@ -50,8 +61,7 @@ function generaNumeriCasuali() {
     while (numeriCasuali.length < 16) {
         const numeroCasuale = getRndInteger(min, max);
 
- // Verifica se il numero casuale generato è già nell'array
-
+        // Verifica se il numero casuale generato è già nell'array
         if (!numeriCasuali.includes(numeroCasuale)) {
             numeriCasuali.push(numeroCasuale);
         }
@@ -65,5 +75,8 @@ function getRndInteger(min, max) {
 }
 
 console.log(numeriUnici);
+
+
+
 
   
